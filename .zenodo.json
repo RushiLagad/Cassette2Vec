@@ -1,0 +1,21 @@
+{
+  "title": "Cassette2Vec-EC: cassette-aware genomic ML for Enterococcus cecorum pathogenicity prediction",
+  "description": "Cassette2Vec-EC is an Enterococcus cecorum–specific implementation of the Cassette2Vec framework for cassette- and genomic island–aware feature engineering and genome-level pathogenicity prediction.",
+  "license": "MIT",
+  "upload_type": "software",
+  "keywords": [
+    "Enterococcus cecorum",
+    "genomic islands",
+    "mobilome",
+    "pangenome",
+    "machine learning",
+    "XGBoost",
+    "SHAP"
+  ],
+  "creators": [
+    {
+      "name": "Lagad, Rushikesh Rajaram",
+      "affiliation": "University of Arkansas"
+    }
+  ]
+}
