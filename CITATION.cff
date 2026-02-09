@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it."
+title: "Cassette2Vec-EC"
+type: software
+license: MIT
+authors:
+  - family-names: Lagad
+    given-names: Rushikesh Rajaram
+    affiliation: University of Arkansas
+repository-code: "https://github.com/RushiLagad/Cassette2Vec"
