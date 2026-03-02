@@ -1,6 +1,6 @@
 # Cassette2Vec
 Machine learning framework for Enterococcus cecorum pathogenicity prediction (Antimicrobial Resistance + genomic islands + pangenome)
-# CASSETTE2VEC v1 — Machine Learning Model for *Enterococcus cecorum* Pathogenicity Prediction
+# CASSETTE2VEC v1  Machine Learning Model for *Enterococcus cecorum* Pathogenicity Prediction
 
 CASSETTE2VEC is a genomic cassette–aware machine learning framework designed to predict **pathogenic vs. commensal** *Enterococcus cecorum* genomes using antimicrobial resistance (AMR) signatures, genomic islands, pangenome structure, and genome-level features.
 
