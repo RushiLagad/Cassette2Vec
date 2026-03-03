@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -e
 echo "[1/3] Adding AMR neighborhood features..."
 python add_AMR_neighborhood_v1.py
