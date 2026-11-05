@@ -2,16 +2,16 @@
 """
 cassette2vec_predict.py
 =======================
-Cassette2Vec-EC v1.1 — Full Prediction Pipeline for New Genomes
+Cassette2Vec-EC v1.1 - Full Prediction Pipeline for New Genomes
 
 Given a new Enterococcus cecorum genome, this script:
-  Step 1 — Loads IslandViewer CSV output for the genome
-  Step 2 — Loads ABRicate AMR screening output for the genome
-  Step 3 — Builds cassette-level feature vectors
-  Step 4 — Computes AMR neighborhood scores
-  Step 5 — Runs the trained XGBoost model
-  Step 6 — Aggregates cassette-level scores to a genome-level risk score
-  Step 7 — Prints and saves the prediction
+  Step 1 - Loads IslandViewer CSV output for the genome
+  Step 2 - Loads ABRicate AMR screening output for the genome
+  Step 3 - Builds cassette-level feature vectors
+  Step 4 - Computes AMR neighborhood scores
+  Step 5 - Runs the trained XGBoost model
+  Step 6 - Aggregates cassette-level scores to a genome-level risk score
+  Step 7 - Prints and saves the prediction
 
 Usage:
   python cassette2vec_predict.py \\
@@ -21,7 +21,7 @@ Usage:
       --model        data/cassette2vec_v11_model.pkl \\
       --outdir       predictions/
 
-  # Batch mode — run on a folder of IslandViewer + ABRicate files:
+  # Batch mode - run on a folder of IslandViewer + ABRicate files:
   python cassette2vec_predict.py --batch \\
       --islandviewer_dir  data/islandviewer/ \\
       --abricate_dir      data/abricate/ \\
@@ -119,7 +119,7 @@ def normalise_genome_id(gid: str) -> str:
     """
     gid = str(gid).strip()
     if "_" in gid:
-        # Already has underscores — just ensure dot-version
+        # Already has underscores - just ensure dot-version
         parts = gid.replace(".", "_").split("_")
         if len(parts) >= 3:
             accession = "_".join(parts[:3])
@@ -147,7 +147,7 @@ def flag_mobility(product: str) -> tuple:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 1 — LOAD AND VALIDATE ISLANDVIEWER OUTPUT
+# STEP 1 - LOAD AND VALIDATE ISLANDVIEWER OUTPUT
 # ══════════════════════════════════════════════════════════════════════════════
 
 def load_islandviewer(path: Path, genome_id: str) -> pd.DataFrame:
@@ -208,9 +208,9 @@ def load_islandviewer(path: Path, genome_id: str) -> pd.DataFrame:
         s, e = int(row["island_start"]), int(row["island_end"])
         if current_start is None:
             current_start, current_end, gi_id = s, e, 1
-        elif s <= current_end:                         # overlapping — extend
+        elif s <= current_end:                         # overlapping - extend
             current_end = max(current_end, e)
-        else:                                           # gap — new island
+        else:                                           # gap - new island
             merged.append((current_start, current_end, gi_id))
             gi_id += 1
             current_start, current_end = s, e
@@ -246,7 +246,7 @@ def load_islandviewer(path: Path, genome_id: str) -> pd.DataFrame:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 2 — LOAD AND VALIDATE ABRICATE OUTPUT
+# STEP 2 - LOAD AND VALIDATE ABRICATE OUTPUT
 # ══════════════════════════════════════════════════════════════════════════════
 
 def load_abricate(path: Path, genome_id: str) -> pd.DataFrame:
@@ -298,7 +298,7 @@ def load_abricate(path: Path, genome_id: str) -> pd.DataFrame:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 3 — BUILD CASSETTE FEATURE MATRIX
+# STEP 3 - BUILD CASSETTE FEATURE MATRIX
 # ══════════════════════════════════════════════════════════════════════════════
 
 def build_feature_matrix(iv_df: pd.DataFrame, ab_df: pd.DataFrame,
@@ -310,7 +310,7 @@ def build_feature_matrix(iv_df: pd.DataFrame, ab_df: pd.DataFrame,
     Each row = one gene within a GI-anchored cassette.
     """
     if len(iv_df) == 0:
-        print("  [FEAT] Cannot build features — no GI genes found.")
+        print("  [FEAT] Cannot build features - no GI genes found.")
         return pd.DataFrame()
 
     df = iv_df.copy()
@@ -332,7 +332,7 @@ def build_feature_matrix(iv_df: pd.DataFrame, ab_df: pd.DataFrame,
             a_e    = int(amr_row.get("amr_end", 0))
 
             # Genes on this contig that overlap with the AMR hit
-            # (IslandViewer doesn't carry contig — use coordinate overlap only)
+            # (IslandViewer doesn't carry contig - use coordinate overlap only)
             overlap_mask = (
                 (df["start"] <= a_e) & (df["end"] >= a_s)
             )
@@ -385,7 +385,7 @@ def build_feature_matrix(iv_df: pd.DataFrame, ab_df: pd.DataFrame,
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 4 — RUN MODEL AND AGGREGATE TO GENOME LEVEL
+# STEP 4 - RUN MODEL AND AGGREGATE TO GENOME LEVEL
 # ══════════════════════════════════════════════════════════════════════════════
 
 def predict_genome(df: pd.DataFrame, model, genome_id: str) -> dict:
@@ -394,7 +394,7 @@ def predict_genome(df: pd.DataFrame, model, genome_id: str) -> dict:
     Returns a dict with genome-level risk score and cassette-level details.
     """
     if len(df) == 0:
-        return {"genome_id": genome_id, "error": "No features built — check input files"}
+        return {"genome_id": genome_id, "error": "No features built - check input files"}
 
     # ── Select and order model features ───────────────────────────────────
     missing_features = [f for f in MODEL_FEATURES if f not in df.columns]
@@ -437,7 +437,7 @@ def predict_genome(df: pd.DataFrame, model, genome_id: str) -> dict:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 5 — SAVE OUTPUTS
+# STEP 5 - SAVE OUTPUTS
 # ══════════════════════════════════════════════════════════════════════════════
 
 def save_outputs(result: dict, outdir: Path):
@@ -466,7 +466,7 @@ def save_outputs(result: dict, outdir: Path):
 def print_result(result: dict):
     print()
     print("=" * 58)
-    print(f"  CASSETTE2VEC-EC v1.1  —  PREDICTION RESULT")
+    print(f"  CASSETTE2VEC-EC v1.1  -  PREDICTION RESULT")
     print("=" * 58)
     print(f"  Genome ID        : {result['genome_id']}")
     print(f"  Genome Risk Score: {result['genome_risk_score']:.4f}  (0=commensal, 1=pathogenic)")
@@ -495,7 +495,7 @@ def print_result(result: dict):
 def parse_args():
     repo_root = Path(__file__).resolve().parent
     p = argparse.ArgumentParser(
-        description="Cassette2Vec-EC v1.1 — Predict pathogenicity of a new E. cecorum genome",
+        description="Cassette2Vec-EC v1.1 - Predict pathogenicity of a new E. cecorum genome",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )

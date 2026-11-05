@@ -1,10 +1,32 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it."
+message: "If you use this software, please cite the paper below."
 title: "Cassette2Vec-EC"
 type: software
 license: MIT
+repository-code: "https://github.com/RushiLagad/Cassette2Vec"
+doi: 10.5281/zenodo.18529389
 authors:
   - family-names: Lagad
-    given-names: Rushikesh Rajaram
+    given-names: Rushikesh R.
     affiliation: University of Arkansas
-repository-code: "https://github.com/RushiLagad/Cassette2Vec"
+  - family-names: Rafi
+    given-names: Shakil
+    affiliation: University of Arkansas
+  - family-names: Goswami
+    given-names: Aranyak
+    affiliation: University of Arkansas
+preferred-citation:
+  type: article
+  title: "Genomic-island cassette architecture provides interpretable signal for exploratory classification of poultry-associated Enterococcus cecorum lineages"
+  journal: "Frontiers in Microbiology"
+  volume: 17
+  start: 1882753
+  year: 2026
+  doi: 10.3389/fmicb.2026.1882753
+  authors:
+    - family-names: Lagad
+      given-names: Rushikesh R.
+    - family-names: Rafi
+      given-names: Shakil
+    - family-names: Goswami
+      given-names: Aranyak

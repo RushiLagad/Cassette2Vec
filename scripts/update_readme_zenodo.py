@@ -21,13 +21,13 @@ ZENODO_API_URL = f"https://zenodo.org/api/records/{ZENODO_RECORD_ID}"
 README_PATH = Path(__file__).resolve().parent.parent / "README.md"
 
 FILE_DESCRIPTIONS = {
-    "cassette2vec_v11_model.pkl": "Trained XGBoost model — load with `joblib.load()`",
+    "cassette2vec_v11_model.pkl": "Trained XGBoost model - load with `joblib.load()`",
     "cassette2vec_ML_features_v1_with_mobility_load.csv": "Base cassette feature matrix (145 genomes, 51,302 rows)",
     "cassette2vec_v11_predictions.csv": "Cassette-level model predictions (`true_label`, `pred_score`)",
     "cassette2vec_islandviewer_all_clean.csv": "IslandViewer genomic island calls (all 145 genomes, cleaned)",
-    "cassette2vec_predict.py": "Prediction pipeline — run on a new genome",
+    "cassette2vec_predict.py": "Prediction pipeline - run on a new genome",
     "cassette2vec_ML_v11_FINAL.py": "Evaluation + SHAP figure generation script",
-    "add_AMR_neighborhood_v1.py": "Step 2 pipeline — adds AMR neighborhood scores to feature matrix",
+    "add_AMR_neighborhood_v1.py": "Step 2 pipeline - adds AMR neighborhood scores to feature matrix",
     "requirements.txt": "Pinned Python package versions",
     "environment.yml": "Conda environment specification",
 }
@@ -78,9 +78,9 @@ def build_files_table(record: dict) -> str:
     for f in files_sorted:
         name = f.get("key", "unknown")
         size = human_size(f.get("size", 0))
-        desc = FILE_DESCRIPTIONS.get(name, "—")
+        desc = FILE_DESCRIPTIONS.get(name, "-")
         link = f.get("links", {}).get("self", "")
-        dl_badge = f"[⬇ Download]({link})" if link else "—"
+        dl_badge = f"[⬇ Download]({link})" if link else "-"
         lines.append(f"| `{name}` | {size} | {desc} | {dl_badge} |")
     return "\n".join(lines) + "\n"
 
@@ -89,9 +89,9 @@ def build_zenodo_section(record: dict) -> str:
     doi = record.get("doi", "10.5281/zenodo.18529389")
     version = record.get("metadata", {}).get("version", "v1.0.0")
     stats = record.get("stats", {})
-    views = stats.get("unique_views", stats.get("views", "—"))
-    downloads = stats.get("unique_downloads", stats.get("downloads", "—"))
-    pub_date = record.get("metadata", {}).get("publication_date", "—")
+    views = stats.get("unique_views", stats.get("views", "-"))
+    downloads = stats.get("unique_downloads", stats.get("downloads", "-"))
+    pub_date = record.get("metadata", {}).get("publication_date", "-")
     updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     n_files = len(record.get("files", []))
     total_bytes = sum(f.get("size", 0) for f in record.get("files", []))
@@ -100,7 +100,7 @@ def build_zenodo_section(record: dict) -> str:
 
     section = f"""
 <!-- ZENODO_FILES_START -->
-> **Auto-generated from Zenodo API** — Last updated: {updated}
+> **Auto-generated from Zenodo API** - Last updated: {updated}
 
 ### 📦 Zenodo Archive
 
@@ -141,7 +141,7 @@ def update_readme(section: str) -> bool:
         end_idx += len(end_marker)
         new_content = content[:start_idx] + section.strip() + "\n" + content[end_idx:]
     if new_content == content:
-        print("[INFO] README already up to date — no changes made.")
+        print("[INFO] README already up to date - no changes made.")
         return False
     README_PATH.write_text(new_content, encoding="utf-8")
     print(f"[SAVED] README updated: {README_PATH}")
@@ -153,8 +153,8 @@ def main():
     section = build_zenodo_section(record)
     changed = update_readme(section)
     files = record.get("files", [])
-    print(f"\n[INFO] Record: {record.get('doi', '—')}")
-    print(f"[INFO] Version: {record.get('metadata', {}).get('version', '—')}")
+    print(f"\n[INFO] Record: {record.get('doi', '-')}")
+    print(f"[INFO] Version: {record.get('metadata', {}).get('version', '-')}")
     print(f"[INFO] Files found: {len(files)}")
     for f in files:
         print(f"       {f.get('key', '?'):60s} {human_size(f.get('size', 0))}")

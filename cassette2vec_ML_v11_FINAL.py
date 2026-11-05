@@ -2,7 +2,7 @@
 """
 cassette2vec_ML_v11_FINAL.py
 ============================
-Cassette2Vec-EC v1.1 — Evaluation & Visualization Script
+Cassette2Vec-EC v1.1 - Evaluation & Visualization Script
 
 Generates all manuscript figures:
   • ROC curve                   → cassette2vec_v11_ROC_curve.png
@@ -38,7 +38,7 @@ Zenodo DOI: https://doi.org/10.5281/zenodo.18529389
 """
 
 # ============================================================
-# REPRODUCIBILITY — fix all seeds before any other imports
+# REPRODUCIBILITY - fix all seeds before any other imports
 # ============================================================
 import random
 import numpy as np
@@ -77,7 +77,7 @@ def parse_args():
     repo_root = Path(__file__).resolve().parent
 
     parser = argparse.ArgumentParser(
-        description="Cassette2Vec v1.1 — Generate all evaluation figures"
+        description="Cassette2Vec v1.1 - Generate all evaluation figures"
     )
     parser.add_argument(
         "--model",
@@ -120,7 +120,7 @@ def parse_args():
 
 
 # ============================================================
-# HELPER — save figure
+# HELPER - save figure
 # ============================================================
 def save_fig(outdir: Path, filename: str, dpi: int):
     outdir.mkdir(parents=True, exist_ok=True)
@@ -132,7 +132,7 @@ def save_fig(outdir: Path, filename: str, dpi: int):
 
 
 # ============================================================
-# PLOT 1 — ROC CURVE
+# PLOT 1 - ROC CURVE
 # ============================================================
 def plot_roc(y_true, y_pred, outdir, dpi):
     print("[PLOT] ROC curve...")
@@ -145,13 +145,13 @@ def plot_roc(y_true, y_pred, outdir, dpi):
     plt.plot([0, 1], [0, 1], "--", color="gray", lw=1)
     plt.xlabel("False Positive Rate", fontsize=12)
     plt.ylabel("True Positive Rate", fontsize=12)
-    plt.title("Cassette2Vec v1.1 – ROC Curve", fontsize=13)
+    plt.title("Cassette2Vec v1.1 - ROC Curve", fontsize=13)
     plt.legend(fontsize=11)
     save_fig(outdir, "cassette2vec_v11_ROC_curve.png", dpi)
 
 
 # ============================================================
-# PLOT 2 — PRECISION-RECALL CURVE
+# PLOT 2 - PRECISION-RECALL CURVE
 # ============================================================
 def plot_pr(y_true, y_pred, outdir, dpi):
     print("[PLOT] Precision-Recall curve...")
@@ -163,13 +163,13 @@ def plot_pr(y_true, y_pred, outdir, dpi):
              label=f"Cassette2Vec v1.1  (AP = {pr_auc:.3f})")
     plt.xlabel("Recall", fontsize=12)
     plt.ylabel("Precision", fontsize=12)
-    plt.title("Cassette2Vec v1.1 – Precision-Recall Curve", fontsize=13)
+    plt.title("Cassette2Vec v1.1 - Precision-Recall Curve", fontsize=13)
     plt.legend(fontsize=11)
     save_fig(outdir, "cassette2vec_v11_PR_curve.png", dpi)
 
 
 # ============================================================
-# PLOT 3 — SCORE DISTRIBUTION BOXPLOT
+# PLOT 3 - SCORE DISTRIBUTION BOXPLOT
 # ============================================================
 def plot_boxplot(pred_df, outdir, dpi):
     print("[PLOT] Score distribution boxplot...")
@@ -184,12 +184,12 @@ def plot_boxplot(pred_df, outdir, dpi):
                   order=["commensal", "pathogenic"])
     plt.xlabel("Group", fontsize=12)
     plt.ylabel("Predicted Score", fontsize=12)
-    plt.title("Cassette2Vec v1.1 – Score Distribution", fontsize=13)
+    plt.title("Cassette2Vec v1.1 - Score Distribution", fontsize=13)
     save_fig(outdir, "cassette2vec_v11_boxplot.png", dpi)
 
 
 # ============================================================
-# PLOT 4 — CONFUSION MATRIX
+# PLOT 4 - CONFUSION MATRIX
 # ============================================================
 def plot_confusion(y_true, y_pred, threshold, outdir, dpi):
     print(f"[PLOT] Confusion matrix (threshold = {threshold})...")
@@ -204,13 +204,13 @@ def plot_confusion(y_true, y_pred, threshold, outdir, dpi):
     )
     plt.xlabel("Predicted", fontsize=11)
     plt.ylabel("True", fontsize=11)
-    plt.title(f"Cassette2Vec v1.1 – Confusion Matrix\n(threshold = {threshold})",
+    plt.title(f"Cassette2Vec v1.1 - Confusion Matrix\n(threshold = {threshold})",
               fontsize=12)
     save_fig(outdir, "cassette2vec_v11_confusion_matrix.png", dpi)
 
 
 # ============================================================
-# PLOT 5 — CALIBRATION CURVE (manual, no sklearn dependency)
+# PLOT 5 - CALIBRATION CURVE (manual, no sklearn dependency)
 # ============================================================
 def plot_calibration(y_true, y_pred, outdir, dpi, n_bins=10):
     print("[PLOT] Calibration curve...")
@@ -232,16 +232,16 @@ def plot_calibration(y_true, y_pred, outdir, dpi, n_bins=10):
              label="Cassette2Vec v1.1")
     plt.xlabel("Predicted Probability", fontsize=12)
     plt.ylabel("Observed Frequency", fontsize=12)
-    plt.title("Cassette2Vec v1.1 – Calibration Curve", fontsize=13)
+    plt.title("Cassette2Vec v1.1 - Calibration Curve", fontsize=13)
     plt.legend(fontsize=11)
     save_fig(outdir, "cassette2vec_v11_calibration.png", dpi)
 
 
 # ============================================================
-# PLOT 6 — SHAP BEESWARM SUMMARY
+# PLOT 6 - SHAP BEESWARM SUMMARY
 # ============================================================
 def plot_shap(model, features_path: Path, outdir: Path, dpi: int):
-    print("[PLOT] SHAP summary plot (this may take 1–2 minutes)...")
+    print("[PLOT] SHAP summary plot (this may take 1-2 minutes)...")
 
     if not features_path.exists():
         print(
@@ -253,7 +253,7 @@ def plot_shap(model, features_path: Path, outdir: Path, dpi: int):
 
     features_df = pd.read_csv(features_path, low_memory=False)
 
-    # Drop label and identifier columns — keep only model input features
+    # Drop label and identifier columns - keep only model input features
     drop_cols = [
         "is_pathogenic", "true_label", "pred_score",
         "genome_id", "contig", "GI_ID", "gene_id",      # identifiers
@@ -277,7 +277,7 @@ def plot_shap(model, features_path: Path, outdir: Path, dpi: int):
 
     plt.figure(figsize=(10, 7))
     shap.summary_plot(shap_values, features_df, show=False, max_display=15)
-    plt.title("Cassette2Vec v1.1 – SHAP Feature Importance", fontsize=13, pad=14)
+    plt.title("Cassette2Vec v1.1 - SHAP Feature Importance", fontsize=13, pad=14)
     save_fig(outdir, "cassette2vec_v11_SHAP_summary.png", dpi)
 
 
@@ -294,7 +294,7 @@ def print_metrics(y_true, y_pred, threshold):
     tn, fp, fn, tp = cm.ravel()
 
     print("\n" + "=" * 52)
-    print("  Cassette2Vec v1.1 — Performance Summary")
+    print("  Cassette2Vec v1.1 - Performance Summary")
     print("=" * 52)
     print(f"  ROC-AUC     : {roc_auc:.4f}")
     print(f"  Avg Precision: {ap:.4f}")

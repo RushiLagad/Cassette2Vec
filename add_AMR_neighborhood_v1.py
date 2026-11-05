@@ -4,13 +4,13 @@ add_AMR_neighborhood_v1.py
 ==========================
 Add AMR_neighborhood_score and AMR_cluster_size to the Cassette2Vec feature table.
 
-This is Step 2 of the Cassette2Vec-EC pipeline — must be run BEFORE
+This is Step 2 of the Cassette2Vec-EC pipeline - must be run BEFORE
 cassette2vec_ML_v11_FINAL.py (which needs the output file for SHAP plots).
 
 Pipeline order:
-  STEP 1: cassette2vec_predict.py    — builds base feature matrix
-  STEP 2: add_AMR_neighborhood_v1.py — adds AMR neighborhood features  ← THIS SCRIPT
-  STEP 3: cassette2vec_ML_v11_FINAL.py — evaluation plots + SHAP
+  STEP 1: cassette2vec_predict.py    - builds base feature matrix
+  STEP 2: add_AMR_neighborhood_v1.py - adds AMR neighborhood features  ← THIS SCRIPT
+  STEP 3: cassette2vec_ML_v11_FINAL.py - evaluation plots + SHAP
 
 Scoring logic (applied only to AMR genes where amr_hit == 1):
   For each AMR gene, examine a ±3-gene window (up to 7 genes total)
@@ -23,7 +23,7 @@ Scoring logic (applied only to AMR genes where amr_hit == 1):
     AMR cluster size in window >= 2     →  +1
 
   Outputs per gene:
-    AMR_neighborhood_score  (float, 0–6)
+    AMR_neighborhood_score  (float, 0-6)
     AMR_cluster_size        (int, count of AMR genes in window)
 
   Non-AMR genes (amr_hit == 0) receive score = 0, cluster_size = 0.
@@ -123,7 +123,7 @@ def main():
 
     # ── Check if already processed ────────────────────────────────────────
     if "AMR_neighborhood_score" in df.columns:
-        print("[WARN] Column 'AMR_neighborhood_score' already exists — overwriting.")
+        print("[WARN] Column 'AMR_neighborhood_score' already exists - overwriting.")
 
     # ── Ensure flag columns are numeric 0/1 ──────────────────────────────
     flag_cols = ["amr_hit", "integrase_flag", "transposase_flag", "recombinase_flag"]

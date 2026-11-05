@@ -35,7 +35,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add README.md
           if git diff --staged --quiet; then
-            echo "No changes to README — skipping commit."
+            echo "No changes to README - skipping commit."
           else
             git commit -m "chore: sync Zenodo file list in README [skip ci]"
             git push
