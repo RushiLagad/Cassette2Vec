@@ -1,6 +1,6 @@
 {
   "title": "Cassette2Vec-EC: genomic-island cassette architecture for Enterococcus cecorum lineage classification",
-  "description": "Code and data archive for Lagad RR, Rafi S, Goswami A (2026), Genomic-island cassette architecture provides interpretable signal for exploratory classification of poultry-associated Enterococcus cecorum lineages, Frontiers in Microbiology 17:1882753. Contains the v1.1 cassette-row pipeline: feature construction from IslandViewer and ABRicate output, AMR neighbourhood scoring, a trained XGBoost cassette-row model, and evaluation figures. The primary Random Forest model reported in the paper is not included in this version.",
+  "description": "Code and data archive for Lagad RR, Rafi S, Goswami A (2026), Genomic-island cassette architecture provides interpretable signal for exploratory classification of poultry-associated Enterococcus cecorum lineages, Frontiers in Microbiology 17:1882753. Contains the v1.1 cassette-row pipeline: feature construction from IslandViewer and ABRicate output, AMR neighborhood scoring, a trained XGBoost cassette-row model, and evaluation figures. The primary Random Forest model reported in the paper is not included in this version.",
   "license": "MIT",
   "upload_type": "software",
   "keywords": [
