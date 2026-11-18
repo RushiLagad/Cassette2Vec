@@ -41,8 +41,7 @@ Quote the paper for performance. Use this repository to build cassette features 
 ## What is not here
 
 - **Training and cross-validation code.** The scripts build features, add AMR neighborhood scores and draw figures from a saved predictions file. The genome-grouped cross-validation behind the published numbers is not included, so the grouping cannot be rerun from here.
-- **The locked fold file.** The 145-genome 5-fold assignment is not in the current Zenodo record either.
-- **The accession table.** Commensal and pathogenic accession lists are in Supplementary Data S0a and S0b of the paper.
+- **The cohort table and fold assignments.** Supplementary Data S1 of the paper lists all 145 genomes with accession, BioProject, submitter, country, collection year and `cv5_fold_id`. It is not in the Zenodo record either.
 - **Genome identifiers in the archived predictions.** `cassette2vec_v11_predictions.csv` carries `true_label` and `pred_score` only, so per-genome scores cannot be recomputed from it.
 - **The Random Forest model.** Only the cassette-row model is archived.
 
@@ -79,11 +78,11 @@ pip install zenodo-get
 zenodo_get 18529389 -o data/
 ```
 
-All 145 assemblies are public on NCBI. Accession lists are in Supplementary Data S0a (commensal) and S0b (pathogenic) of the paper.
+All 145 assemblies are public on NCBI. Supplementary Data S1 of the paper lists every genome with its accession, BioProject, submitter, country, collection year and cross-validation fold.
 
 BioProjects: PRJNA165387, PRJNA191885, PRJNA82533, PRJNA268097, PRJNA284225 to PRJNA284229, PRJNA284445 to PRJNA284446, PRJNA352388, PRJNA377666, PRJNA493784, PRJNA580016, PRJNA704975, PRJNA1050746, PRJDB18532, PRJEB33338, PRJEB57096.
 
-Those 20 BioProjects cover 141 of the 145 genomes. The remaining 4, all pathogenic, were retrieved as direct GCF assembly accessions with no associated BioProject, so rebuilding the cohort from the project list alone will come up short. The accession lists in the supplementary data are the complete record.
+Those 20 BioProjects cover 141 of the 145 genomes. The remaining 4, all pathogenic, were retrieved as direct GCF assembly accessions with no associated BioProject, so rebuilding the cohort from the project list alone will come up short. Supplementary Data S1 is the complete record.
 
 ## Running it
 
