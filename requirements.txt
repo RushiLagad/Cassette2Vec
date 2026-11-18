@@ -1,7 +1,13 @@
-pandas
-numpy
-scikit-learn
-xgboost
-matplotlib
-seaborn
-scipy
+# Pinned to the versions reported in Lagad et al. 2026 (Frontiers in Microbiology 17:1882753).
+# scikit-learn and xgboost versions are stated in the paper; the rest are the versions
+# the v1.1 pipeline was run with.
+numpy==1.26.4
+pandas==2.2.1
+scipy==1.11.4
+scikit-learn==1.3.2
+xgboost==2.0.3
+shap==0.44.1
+joblib==1.3.2
+matplotlib==3.8.3
+seaborn==0.13.2
+biopython==1.83
