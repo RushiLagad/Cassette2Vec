@@ -34,16 +34,31 @@ The gap between 0.918 and 0.694 is part of the finding. The signal is real insid
 
 The paper's primary result is a Random Forest (500 trees, `random_state=42`, balanced class weights) on 84 genome-level cassette summary features, scoring 0.918.
 
-What is archived here is the v1.1 cassette-row pipeline: an XGBoost model over 17 per-cassette features, one row per gene inside a genomic island. The paper reports it separately at 0.874. Different algorithm, different features, different level of aggregation, so the scripts here will not reproduce 0.918.
+What is archived here is the v1.1 cassette-row pipeline: an XGBoost model over 17 per-cassette features, one row per gene inside a genomic island. The paper reports it separately at 0.874. Different algorithm, different features, different level of aggregation, so the cassette-row scripts will not reproduce 0.918. The script in the next section does.
 
-Quote the paper for performance. Use this repository to build cassette features and score new genomes with the archived model.
+Quote the paper for performance. Use the cassette-row pipeline to build cassette features and score new genomes with the archived model.
+
+## Reproducing the published benchmark
+
+`reproduce_benchmark.py` reruns the primary analysis: the Random Forest on the 84 genome-level features, with the locked 5-fold assignment and with leave-one-BioProject-out. Both inputs are in `data/benchmark/`.
+
+```bash
+python reproduce_benchmark.py \
+    --matrix data/benchmark/cassette_genome_summary_matrix_145genomes.csv \
+    --folds  data/benchmark/145genome_cv5_fold_file.csv
+```
+
+Under the pinned environment (scikit-learn 1.3.2) it returns the per-fold AUROC, AUPRC and Brier values of Supplementary Data S2 to three decimals, with one AUPRC value off by 0.001, a mean AUROC of 0.918 and a mean AUPRC of 0.906, and an AUROC of 0.694 on the held-out BioProject. Newer scikit-learn releases draw the forest differently and move the mean AUROC slightly, for example to 0.914 under 1.9.1, so use `requirements.txt` or `environment.yml` as given.
+
+The script was written after publication from the protocol in the Methods and then checked against the supplement. It is not the script that produced the published tables.
+
+The paper's Table 1 reports 0.918 ± 0.067 and Supplementary Data S2 reports 0.918 ± 0.074 for the same five folds. The first is the population standard deviation and the second the sample standard deviation. The script prints both.
 
 ## What is not here
 
-- **Training and cross-validation code.** The scripts build features, add AMR neighborhood scores and draw figures from a saved predictions file. The genome-grouped cross-validation behind the published numbers is not included, so the grouping cannot be rerun from here.
-- **The cohort table and fold assignments.** Supplementary Data S1 of the paper lists all 145 genomes with accession, BioProject, submitter, country, collection year and `cv5_fold_id`. It is not in the Zenodo record either.
-- **Genome identifiers in the archived predictions.** `cassette2vec_v11_predictions.csv` carries `true_label` and `pred_score` only, so per-genome scores cannot be recomputed from it.
-- **The Random Forest model.** Only the cassette-row model is archived.
+- **The original training scripts.** `reproduce_benchmark.py` stands in for the primary model. The baselines in Table 1 (AMR gene content, GI burden, the presence/absence proxy, contig count) and the fragmentation analyses are not reproduced here.
+- **Genome identifiers in the archived predictions.** `cassette2vec_v11_predictions.csv` carries `true_label` and `pred_score` only, so per-genome scores for the cassette-row model cannot be recomputed from it.
+- **A saved Random Forest.** The script retrains it in a few seconds.
 
 ## Repository layout
 
@@ -52,8 +67,10 @@ Cassette2Vec/
 ├── cassette2vec_predict.py        build cassette features and score new genomes
 ├── add_AMR_neighborhood_v1.py     add AMR neighborhood features
 ├── cassette2vec_ML_v11_FINAL.py   evaluation figures and SHAP summary
+├── reproduce_benchmark.py         reruns the primary Random Forest benchmark
 ├── run_pipeline.sh                runs the last two steps in order
 ├── data/                          put inputs here (see below)
+│   └── benchmark/                 84-feature matrix and locked folds for the benchmark
 ├── scripts/update_readme_zenodo.py   keeps the Zenodo file table below current
 ├── requirements.txt
 ├── environment.yml
