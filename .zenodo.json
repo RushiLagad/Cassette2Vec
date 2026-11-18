@@ -1,21 +1,46 @@
 {
-  "title": "Cassette2Vec-EC: cassette-aware genomic ML for Enterococcus cecorum pathogenicity prediction",
-  "description": "Cassette2Vec-EC is an Enterococcus cecorum–specific implementation of the Cassette2Vec framework for cassette- and genomic island–aware feature engineering and genome-level pathogenicity prediction.",
+  "title": "Cassette2Vec-EC: genomic-island cassette architecture for Enterococcus cecorum lineage classification",
+  "description": "Code and data archive for Lagad RR, Rafi S, Goswami A (2026), Genomic-island cassette architecture provides interpretable signal for exploratory classification of poultry-associated Enterococcus cecorum lineages, Frontiers in Microbiology 17:1882753. Contains the v1.1 cassette-row pipeline: feature construction from IslandViewer and ABRicate output, AMR neighborhood scoring, a trained XGBoost cassette-row model, and evaluation figures. Also contains reproduce_benchmark.py with the 84-feature genome-level matrix and the locked fold file, which rerun the primary Random Forest benchmark reported in the paper.",
   "license": "MIT",
   "upload_type": "software",
   "keywords": [
     "Enterococcus cecorum",
     "genomic islands",
     "mobilome",
-    "pangenome",
+    "antimicrobial resistance",
     "machine learning",
+    "Random Forest",
     "XGBoost",
-    "SHAP"
+    "SHAP",
+    "poultry"
   ],
   "creators": [
     {
-      "name": "Lagad, Rushikesh Rajaram",
+      "name": "Lagad, Rushikesh R.",
+      "affiliation": "Department of Animal Science and Center for Agricultural Data Analytics, University of Arkansas System Division of Agriculture",
+      "orcid": "0009-0006-6613-4214"
+    },
+    {
+      "name": "Rafi, Shakil",
       "affiliation": "University of Arkansas"
+    },
+    {
+      "name": "Goswami, Aranyak",
+      "affiliation": "Department of Animal Science and Center for Agricultural Data Analytics, University of Arkansas System Division of Agriculture"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.3389/fmicb.2026.1882753",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://github.com/RushiLagad/Cassette2Vec",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
     }
   ]
 }
