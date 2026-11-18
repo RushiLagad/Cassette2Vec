@@ -22,7 +22,7 @@ On 145 genomes (95 commensal, 50 pathogenic) under genome-grouped 5-fold cross-v
 | Cassette + GI burden hybrid | 99 | 0.915 ± 0.062 |
 | AMR gene content, corrected | 43 | 0.906 ± 0.044 |
 | GI-restricted gene presence/absence proxy | 484 | 0.887 ± 0.083 |
-| **Cassette-row model (the one archived here)** | 17 | **0.874 ± 0.077** |
+| **Cassette-row model (archived here)** | 17 | **0.874 ± 0.077** |
 | GI burden summaries | 15 | 0.791 ± 0.050 |
 | Assembly quality only (contig count) | 1 | 0.743 ± 0.015 |
 
@@ -32,23 +32,19 @@ The gap between 0.918 and 0.694 is part of the finding. The signal is real insid
 
 ## Which model is in this repository
 
-Read this before comparing anything here against the paper.
+The paper's primary result is a Random Forest (500 trees, `random_state=42`, balanced class weights) on 84 genome-level cassette summary features, scoring 0.918.
 
-The paper's **primary** result is a Random Forest (500 trees, `random_state=42`, balanced class weights) on **84 genome-level** cassette summary features, scoring 0.918.
+What is archived here is the v1.1 cassette-row pipeline: an XGBoost model over 17 per-cassette features, one row per gene inside a genomic island. The paper reports it separately at 0.874. Different algorithm, different features, different level of aggregation, so the scripts here will not reproduce 0.918.
 
-This repository archives the **v1.1 cassette-row pipeline**: an XGBoost model over **17 per-cassette** features, one row per gene inside a genomic island. The paper reports that model separately at **0.874**. It is a different algorithm on a different feature set at a different level of aggregation, so nothing produced by the scripts here will reproduce 0.918.
+Quote the paper for performance. Use this repository to build cassette features and score new genomes with the archived model.
 
-Use the paper for reported performance. Use this repository to build cassette features and score new genomes with the archived cassette-row model.
+## What is not here
 
-## What is not in this repository
-
-Stated plainly so nobody loses time looking:
-
-- **No training or cross-validation code.** The scripts here build features, add AMR neighbourhood scores and draw figures from a saved predictions file. The genome-grouped CV that produced the published numbers is not included, so the grouping cannot be inspected or rerun from this repository.
-- **No locked fold file.** The 145-genome 5-fold assignment used in the paper is not in the current Zenodo record.
-- **No accession table.** The commensal and pathogenic accession lists are in Supplementary Data S0a and S0b of the paper, not here.
-- **No genome identifiers in the archived predictions.** `cassette2vec_v11_predictions.csv` has `true_label` and `pred_score` only, so per-genome scores cannot be recomputed from it.
-- **No Random Forest model.** See the section above.
+- **Training and cross-validation code.** The scripts build features, add AMR neighborhood scores and draw figures from a saved predictions file. The genome-grouped cross-validation behind the published numbers is not included, so the grouping cannot be rerun from here.
+- **The locked fold file.** The 145-genome 5-fold assignment is not in the current Zenodo record either.
+- **The accession table.** Commensal and pathogenic accession lists are in Supplementary Data S0a and S0b of the paper.
+- **Genome identifiers in the archived predictions.** `cassette2vec_v11_predictions.csv` carries `true_label` and `pred_score` only, so per-genome scores cannot be recomputed from it.
+- **The Random Forest model.** Only the cassette-row model is archived.
 
 ## Repository layout
 
