@@ -8,22 +8,47 @@ Reading the gene neighborhoods inside genomic islands to classify poultry-associ
 
 ## What this is
 
-Most genome classifiers treat a genome as a bag of genes. Cassette2Vec-EC looks at local arrangement instead. It splits each genomic island into cassettes (a gene plus its immediate neighbors), turns each cassette into a feature vector built from island context, mobility genes and AMR hits, and trains an XGBoost model with genomes kept together in cross-validation so no genome leaks between train and test.
+Most genome classifiers treat a genome as a bag of genes. Cassette2Vec-EC looks at local arrangement instead. Cassettes are contiguous runs of genes inside merged IslandViewer intervals, bounded by contig ends or by non-island gaps. Each cassette carries features built from island context, mobility genes and AMR hits, and models are evaluated with genomes kept together in cross-validation so no genome leaks between train and test.
 
 ## Published result
 
 Lagad RR, Rafi S, Goswami A. Genomic-island cassette architecture provides interpretable signal for exploratory classification of poultry-associated *Enterococcus cecorum* lineages. *Frontiers in Microbiology*. 2026;17:1882753. https://doi.org/10.3389/fmicb.2026.1882753
 
-On 145 genomes the paper reports:
+On 145 genomes (95 commensal, 50 pathogenic) under genome-grouped 5-fold cross-validation the paper reports:
 
-| Validation | AUROC |
-|---|---|
-| Genome-grouped cross-validation | 0.918 |
-| Whole studies held out | 0.694 |
+| Model | Features | AUROC |
+|---|---|---|
+| **Cassette2Vec-EC, genome-level (primary)** | 84 | **0.918 ± 0.067** |
+| Cassette + GI burden hybrid | 99 | 0.915 ± 0.062 |
+| AMR gene content, corrected | 43 | 0.906 ± 0.044 |
+| GI-restricted gene presence/absence proxy | 484 | 0.887 ± 0.083 |
+| **Cassette-row model (the one archived here)** | 17 | **0.874 ± 0.077** |
+| GI burden summaries | 15 | 0.791 ± 0.050 |
+| Assembly quality only (contig count) | 1 | 0.743 ± 0.015 |
 
-The gap between those two numbers is part of the finding. The signal is real inside the training studies and gets weaker on a study the model has never seen, which is why the paper calls the classifier exploratory.
+Leave-one-BioProject-out, training on 20 projects and testing on PRJNA1050746: cassette 0.694, AMR gene content 0.663, GI burden 0.405, contig count 0.314.
 
-**Use the paper for reported performance.** The code here is the v1.1 pipeline archived on Zenodo in February 2026, before the final revision. Its evaluation script works at a different level of aggregation, so the numbers it prints will not match the table above.
+The gap between 0.918 and 0.694 is part of the finding. The signal is real inside the training studies and gets weaker on a study the model has never seen, which is why the paper calls the classifier exploratory.
+
+## Which model is in this repository
+
+Read this before comparing anything here against the paper.
+
+The paper's **primary** result is a Random Forest (500 trees, `random_state=42`, balanced class weights) on **84 genome-level** cassette summary features, scoring 0.918.
+
+This repository archives the **v1.1 cassette-row pipeline**: an XGBoost model over **17 per-cassette** features, one row per gene inside a genomic island. The paper reports that model separately at **0.874**. It is a different algorithm on a different feature set at a different level of aggregation, so nothing produced by the scripts here will reproduce 0.918.
+
+Use the paper for reported performance. Use this repository to build cassette features and score new genomes with the archived cassette-row model.
+
+## What is not in this repository
+
+Stated plainly so nobody loses time looking:
+
+- **No training or cross-validation code.** The scripts here build features, add AMR neighbourhood scores and draw figures from a saved predictions file. The genome-grouped CV that produced the published numbers is not included, so the grouping cannot be inspected or rerun from this repository.
+- **No locked fold file.** The 145-genome 5-fold assignment used in the paper is not in the current Zenodo record.
+- **No accession table.** The commensal and pathogenic accession lists are in Supplementary Data S0a and S0b of the paper, not here.
+- **No genome identifiers in the archived predictions.** `cassette2vec_v11_predictions.csv` has `true_label` and `pred_score` only, so per-genome scores cannot be recomputed from it.
+- **No Random Forest model.** See the section above.
 
 ## Repository layout
 
@@ -61,6 +86,8 @@ zenodo_get 18529389 -o data/
 All 145 assemblies are public on NCBI. Accession lists are in Supplementary Data S0a (commensal) and S0b (pathogenic) of the paper.
 
 BioProjects: PRJNA165387, PRJNA191885, PRJNA82533, PRJNA268097, PRJNA284225 to PRJNA284229, PRJNA284445 to PRJNA284446, PRJNA352388, PRJNA377666, PRJNA493784, PRJNA580016, PRJNA704975, PRJNA1050746, PRJDB18532, PRJEB33338, PRJEB57096.
+
+Those 20 BioProjects cover 141 of the 145 genomes. The remaining 4, all pathogenic, were retrieved as direct GCF assembly accessions with no associated BioProject, so rebuilding the cohort from the project list alone will come up short. The accession lists in the supplementary data are the complete record.
 
 ## Running it
 
